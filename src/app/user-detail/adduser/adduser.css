@@ -1,0 +1,84 @@
+.container {
+    padding: 20px;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.form-card {
+    margin-bottom: 24px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+mat-card-header {
+    margin-bottom: 24px;
+}
+
+mat-card-title {
+    font-size: 24px;
+    font-weight: 500;
+    margin: 0;
+}
+
+.form-section {
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    padding: 16px;
+    margin-bottom: 24px;
+}
+
+.form-section legend {
+    font-size: 14px;
+    font-weight: 600;
+    color: #666;
+    padding: 0 8px;
+}
+
+.full-width {
+    width: 100%;
+    margin-bottom: 16px;
+}
+
+.half-width {
+    width: calc(50% - 8px);
+    margin-right: 16px;
+    margin-bottom: 16px;
+}
+
+.half-width:nth-child(even) {
+    margin-right: 0;
+}
+
+.form-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+    margin-top: 32px;
+    padding-top: 16px;
+    border-top: 1px solid #e0e0e0;
+}
+
+.loading-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.9);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    z-index: 1000;
+    border-radius: 4px;
+}
+
+form.disabled {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+button[disabled] {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
