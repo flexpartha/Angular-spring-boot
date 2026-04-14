@@ -16,21 +16,6 @@
             <button mat-raised-button color="primary" type="submit" [disabled]="loginForm.invalid">Login</button>
         </form>
         </mat-card-content>
-        <ng-container>
-            @if (authMsg$ | async; as auth) {
-                <mat-card-footer>
-                    @if (auth.message) {
-                        <div [ngClass]="{'success-message': auth.statusCode === 200, 'error-message': auth.statusCode && auth.statusCode >= 400}">
-                            {{ auth.message }}
-                        </div>
-                    }
-                </mat-card-footer>
-            }
-            <!-- <mat-card-footer>
-            <div *ngIf="authMsg$ | async as authMsg" style="margin-top: 16px; color: red;">
-                {{ authMsg.message }}
-            </div>
-            </mat-card-footer> -->
-        </ng-container>
+
     </mat-card>
 </div>

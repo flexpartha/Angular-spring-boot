@@ -1,26 +1,26 @@
-import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatInputModule } from '@angular/material/input';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Store } from '@ngrx/store';
+import { filter } from 'rxjs';
 import { loginStart } from '../state/auth.action';
-import { AuthState } from '../state/auth.state';
 import { getAuthMessage } from '../state/auth.selector';
-import { Observable } from 'rxjs';
+import { AuthState } from '../state/auth.state';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, MatInputModule, MatButtonModule, MatCardModule],
+  imports: [ReactiveFormsModule, MatInputModule, MatButtonModule, MatCardModule],
   templateUrl: './login.html',
   styleUrl: './login.css',
 })
 export class Login implements OnInit {
   private store = inject(Store<AuthState>);
   private fb = inject(FormBuilder);
-  authMsg$!: Observable<{ message: string | null, statusCode: number | null }>;
+  private snackBar = inject(MatSnackBar);
 
   loginForm = this.fb.group({
     username: ['', Validators.required],
@@ -28,11 +28,12 @@ export class Login implements OnInit {
   });
 
   ngOnInit() {
-    this.authMsg$ = this.store.select(getAuthMessage);
-    // this.authMsg$.subscribe(({ message, statusCode }) => {
-    //   console.log('Auth message:', message, 'Status code:', statusCode);
-    //   if (message) console.log(`[${statusCode}] ${message}`);
-    // });
+    this.store.select(getAuthMessage)
+      .pipe(filter(auth => !!auth.message))
+      .subscribe(({ message, statusCode }) => {
+        const panelClass = statusCode === 200 ? 'snack-success' : 'snack-error';
+        this.snackBar.open(message!, 'Close', { duration: 3000, panelClass });
+      });
   }
 
   onSubmit() {
