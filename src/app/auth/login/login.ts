@@ -32,12 +32,13 @@ export class Login implements OnInit {
       .pipe(filter(auth => !!auth.message))
       .subscribe(({ message, statusCode }) => {
         const panelClass = statusCode === 200 ? 'snack-success' : 'snack-error';
-        this.snackBar.open(message!, 'Close', { duration: 3000, panelClass });
+        this.snackBar.open(message ?? '', 'Close', { duration: 3000, panelClass });
       });
   }
 
   onSubmit() {
     if (this.loginForm.invalid) return;
-    this.store.dispatch(loginStart({ username: this.loginForm.value.username!, email: this.loginForm.value.email! }));
+    const { username, email } = this.loginForm.value;
+    this.store.dispatch(loginStart({ username: username ?? '', email: email ?? '' }));
   }
 }

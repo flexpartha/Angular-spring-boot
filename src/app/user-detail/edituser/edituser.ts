@@ -25,8 +25,10 @@ import * as UserActions from '../state/user.action';
 import {
   getUserLoading,
   getSelectedUser,
+  getUserById,
 } from '../state/user.selector';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { filter, take } from 'rxjs';
 
 @Component({
   selector: 'app-edituser',
@@ -95,6 +97,13 @@ export class Edituser implements OnInit {
       const user = this.selectedUser();
       if (user) {
         this.userForm.patchValue(user);
+      } else {
+        // On refresh: store is empty, load users then patch form
+        this.store.dispatch(UserActions.loadUsers());
+        this.store.select(getUserById(id)).pipe(
+          filter((u) => !!u),
+          take(1)
+        ).subscribe((u) => this.userForm.patchValue(u));
       }
     });
   }
