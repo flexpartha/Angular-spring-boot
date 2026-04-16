@@ -7,7 +7,15 @@ import { map } from 'rxjs';
 
 export const canLoadGuard: CanMatchFn = () => {
     const router = inject(Router);
-    return inject(Store<AuthState>).select(isAuthenticated).pipe(
-        map(auth => auth || router.createUrlTree(['/login']))
+    const store = inject(Store<AuthState>);
+    // Allow navigation if authenticated in store or if a token exists in localStorage
+    return store.select(isAuthenticated).pipe(
+        map(auth => {
+            if (auth) {
+                return true;
+            }
+            const token = localStorage.getItem('authToken');
+            return token ? true : router.createUrlTree(['/login']);
+        })
     );
 };

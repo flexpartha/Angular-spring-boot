@@ -31,11 +31,23 @@ export class AuthEffects {
         )
     );
 
+    // Effect to store auth token in localStorage for persistence across refreshes
+    loginStoreToken$ = createEffect(() => this.actions$.pipe(
+        ofType(loginSuccess),
+        tap((action) => {
+            // Save token securely; in a real app consider HttpOnly cookies or secure storage
+            localStorage.setItem('authToken', action.user.token);
+        })
+    ), { dispatch: false });
+
+    // Effect to navigate to userlist after successful login
     loginredirect$ = createEffect(() => {
         return this.actions$.pipe(
             ofType(loginSuccess),
             tap((action) => {
-                this._router.navigate(['/userlist']);
+                if (action.redirect) {
+                    this._router.navigate(['/userlist']);
+                }
             })
         );
     }, { dispatch: false })

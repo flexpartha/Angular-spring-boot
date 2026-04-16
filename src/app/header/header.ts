@@ -11,10 +11,11 @@ import { AuthState } from '../auth/state/auth.state';
     styleUrl: './header.css'
 })
 export class Header {
-    constructor(private store: Store<AuthState>, private router: Router) {}
+    constructor(private store: Store<AuthState>, private router: Router) { }
 
     onLogout() {
         this.store.dispatch(logout());
+        localStorage.removeItem('authToken');
         this.router.navigate(['/login']);
     }
 }

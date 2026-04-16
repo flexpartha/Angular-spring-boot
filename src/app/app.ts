@@ -5,6 +5,7 @@ import { AsyncPipe } from '@angular/common';
 import { isAuthenticated } from './auth/state/auth.selector';
 import { AuthState } from './auth/state/auth.state';
 import { Header } from './header/header';
+import { loginSuccess } from './auth/state/auth.action';
 
 @Component({
   selector: 'app-root',
@@ -16,4 +17,11 @@ import { Header } from './header/header';
 export class App {
   private store = inject(Store<AuthState>);
   isAuthenticated$ = this.store.select(isAuthenticated);
+
+  constructor() {
+    const token = localStorage.getItem('authToken');
+    if (token) {
+      this.store.dispatch(loginSuccess({ user: { token }, redirect: false, statusCode: 200 }));
+    }
+  }
 }
