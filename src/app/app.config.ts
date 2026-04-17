@@ -1,4 +1,4 @@
-import { ApplicationConfig, provideBrowserGlobalErrorListeners, isDevMode } from '@angular/core';
+import { ApplicationConfig, provideBrowserGlobalErrorListeners, isDevMode, InjectionToken } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { routes } from './app.routes';
@@ -8,6 +8,8 @@ import { provideEffects } from '@ngrx/effects';
 import { authInterceptorInterceptor } from './auth/service/auth-interceptor-interceptor';
 import { AppReducer } from './store/app.state';
 import { AuthEffects } from './auth/state/auth.effects';
+export const API_BASE_URL = new InjectionToken<string>('API_BASE_URL');
+
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
@@ -15,6 +17,7 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(withInterceptors([authInterceptorInterceptor])),
     provideStore(AppReducer),
     provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }),
-    provideEffects(AuthEffects)
+    provideEffects(AuthEffects),
+    { provide: API_BASE_URL, useValue: '/api' }
   ]
 };
