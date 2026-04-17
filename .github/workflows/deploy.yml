@@ -5,7 +5,6 @@ on:
     branches: [master]
 
 env:
-  REGISTRY: ghcr.io/${{ github.repository_owner }}
   IMAGE_NAME: ghcr.io/${{ github.repository_owner }}/frontend
 
 jobs:
@@ -26,8 +25,7 @@ jobs:
         with:
           context: .
           push: true
-          build-args: |
-             BUILDKIT_PROGRESS=plain
+          provenance: false
           tags: |
             ${{ env.IMAGE_NAME }}:latest
             ${{ env.IMAGE_NAME }}:${{ github.sha }}
