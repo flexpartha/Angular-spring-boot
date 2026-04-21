@@ -13,7 +13,13 @@
             <input matInput formControlName="email" placeholder="Enter your email" />
             </mat-form-field>
 
-            <button mat-raised-button color="primary" type="submit" [disabled]="loginForm.invalid">Login</button>
+            <div style="display: flex; align-items: center; gap: 12px;">
+                <button mat-raised-button color="primary" type="submit"
+                    [disabled]="loginForm.invalid || (isLoading$ | async)">Login</button>
+                @if (isLoading$ | async) {
+                    <mat-spinner diameter="24"></mat-spinner>
+                }
+            </div>
         </form>
         </mat-card-content>
 

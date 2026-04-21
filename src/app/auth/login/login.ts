@@ -3,17 +3,25 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatInputModule } from '@angular/material/input';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Store } from '@ngrx/store';
 import { filter } from 'rxjs';
 import { loginStart } from '../state/auth.action';
-import { getAuthMessage } from '../state/auth.selector';
+import { getAuthLoading, getAuthMessage } from '../state/auth.selector';
 import { AuthState } from '../state/auth.state';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [ReactiveFormsModule, MatInputModule, MatButtonModule, MatCardModule],
+  imports: [ReactiveFormsModule,
+    MatInputModule,
+    MatButtonModule,
+    MatCardModule,
+    MatProgressSpinnerModule,
+    AsyncPipe
+  ],
   templateUrl: './login.html',
   styleUrl: './login.css',
 })
@@ -21,6 +29,8 @@ export class Login implements OnInit {
   private store = inject(Store<AuthState>);
   private fb = inject(FormBuilder);
   private snackBar = inject(MatSnackBar);
+
+  isLoading$ = this.store.select(getAuthLoading);
 
   loginForm = this.fb.group({
     username: ['', Validators.required],

@@ -31,3 +31,5 @@ export const getAuthMessage = createSelector(getAuthState, (state) => ({
         : state.errorMessage,
     statusCode: state.statusCode
 }));
+
+export const getAuthLoading = createSelector(getAuthState, (state) => state.isLoading);

@@ -60,7 +60,8 @@
               "buildTarget": "basic-spring-boot-angular:build:production"
             },
             "development": {
-              "buildTarget": "basic-spring-boot-angular:build:development"
+              "buildTarget": "basic-spring-boot-angular:build:development",
+              "proxyConfig": "proxy.conf.json"
             }
           },
           "defaultConfiguration": "development"
