@@ -21,3 +21,7 @@ export const loginFail = createAction(
 );
 
 export const logout = createAction(LOGOUT_ACTION);
+
+export const refreshStart = createAction('[auth] Refresh Token Start');
+export const refreshSuccess = createAction('[auth] Refresh Token Success', props<{ accessToken: string; refreshToken?: string }>());
+export const refreshFail = createAction('[auth] Refresh Token Fail', props<{ error: string }>());

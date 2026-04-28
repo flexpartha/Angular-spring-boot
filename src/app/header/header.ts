@@ -16,6 +16,7 @@ export class Header {
     onLogout() {
         this.store.dispatch(logout());
         localStorage.removeItem('authToken');
+        localStorage.removeItem('refreshToken');
         this.router.navigate(['/login']);
     }
 }

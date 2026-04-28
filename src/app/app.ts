@@ -20,8 +20,14 @@ export class App {
 
   constructor() {
     const token = localStorage.getItem('authToken');
+    const refreshToken = localStorage.getItem('refreshToken');
+
     if (token) {
-      this.store.dispatch(loginSuccess({ user: { token }, redirect: false, statusCode: 200 }));
+      this.store.dispatch(loginSuccess({
+        user: { accessToken: token, refreshToken: refreshToken ?? undefined },
+        redirect: false,
+        statusCode: 200
+      }));
     }
   }
 }

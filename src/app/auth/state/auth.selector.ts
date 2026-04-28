@@ -10,7 +10,7 @@ export const isAuthenticated = createSelector(getAuthState, (state) => {
 });
 
 export const getAuthToken = createSelector(getAuthState, (state) => {
-    return state.user ? state.user.token : null;
+    return state.user ? state.user.accessToken : null;
 });
 
 export const getAuthErrorMessage = createSelector(getAuthState, (state) => {

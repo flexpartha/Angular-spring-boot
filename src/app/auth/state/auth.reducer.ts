@@ -1,6 +1,6 @@
 import { Action, createReducer, on } from "@ngrx/store";
 import { AuthState, initialState } from "./auth.state";
-import { loginFail, loginStart, loginSuccess, logout } from "./auth.action";
+import { loginFail, loginStart, loginSuccess, logout, refreshSuccess, refreshFail } from "./auth.action";
 
 
 const _authReducer = createReducer(
@@ -21,7 +21,18 @@ const _authReducer = createReducer(
         statusCode: action.statusCode,
         isLoading: false
     })),
-    on(logout, () => initialState)
+    on(logout, () => initialState),
+
+    on(refreshSuccess, (state, action) => {
+        const updatedUser = {
+            ...state.user,
+            accessToken: action.accessToken,
+            ...(action.refreshToken ? { refreshToken: action.refreshToken } : {})
+        } as any;
+        return { ...state, user: updatedUser, successMessage: '', errorMessage: null };
+    }),
+
+    on(refreshFail, (state, action) => ({ ...state, errorMessage: action.error, successMessage: null }))
 
 );
 

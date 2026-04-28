@@ -15,5 +15,8 @@ export class Authservice {
     return this._http.post<LoginResponse>(`${this._baseUrl}/auth/login`, { username, email });
   }
 
+  refreshToken(refreshToken: string): Observable<LoginResponse> {
+    return this._http.post<LoginResponse>(`${this._baseUrl}/auth/refresh`, { refreshToken });
+  }
 
 }

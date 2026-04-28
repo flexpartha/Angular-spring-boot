@@ -2,7 +2,8 @@ export interface LoginResponse {
     "status": number,
     "message": string,
     "data": {
-        "token": string
+        "accessToken": string;
+        "refreshToken": string;
     },
     "error": string,
 }
