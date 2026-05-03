@@ -6,11 +6,9 @@ import { Router } from "@angular/router";
 import { catchError, exhaustMap, map, of, tap, switchMap, timer, mapTo } from "rxjs";
 import { loginFail, loginStart, loginSuccess, refreshStart, refreshSuccess, refreshFail } from "./auth.action";
 import { LoginResponse } from "../models/login.interface";
-import { MatSnackBar } from "@angular/material/snack-bar";
 
 @Injectable()
 export class AuthEffects {
-    private _snackBar = inject(MatSnackBar);
     private actions$ = inject(Actions);
     private authServ = inject(Authservice);
     private store = inject(Store);
@@ -25,11 +23,7 @@ export class AuthEffects {
                         loginSuccess({ user: { accessToken: response.data.accessToken, refreshToken: response.data.refreshToken }, redirect: true, statusCode: response.status })
                     ),
                     catchError((error) => {
-                        const message = error.status === 504
-                            ? 'Gateway Timeout: The server took too long to respond. Please try again.'
-                            : error.error?.message || 'An unexpected error occurred.';
-                        console.log('Login error:', message, 'Status code:', error.status);
-                        this._snackBar.open(message, 'Close', { duration: 3000 });
+                        const message = error.error?.message || 'An unexpected error occurred.';
                         return of(loginFail({ error: message, statusCode: error.status }))
                     })
                 )
@@ -81,7 +75,6 @@ export class AuthEffects {
                     localStorage.removeItem('authToken');
                     localStorage.removeItem('refreshToken');
                     this._router.navigate(['/login']);
-                    this._snackBar.open('Invalid or expired refresh token', 'Close', { duration: 3000 });
                     return of(refreshFail({ error: 'Invalid or expired refresh token' }));
                 }
                 return this.authServ.refreshToken(refresh).pipe(
@@ -95,16 +88,12 @@ export class AuthEffects {
                         if (newRefresh) {
                             localStorage.setItem('refreshToken', newRefresh);
                         }
-                        // Show snackbar about silent refresh
-                        this._snackBar.open('Token refreshed silently after one minute', 'Close', { duration: 3000 });
                         return refreshSuccess({ accessToken: newAccess, refreshToken: newRefresh });
                     }),
                     catchError((err) => {
-                        // On failure, clear tokens and redirect to login
                         localStorage.removeItem('authToken');
                         localStorage.removeItem('refreshToken');
                         this._router.navigate(['/login']);
-                        this._snackBar.open(err?.error?.message, 'Close', { duration: 3000 });
                         return of(refreshFail({ error: err?.error?.message || 'Refresh failed' }));
                     })
                 );
