@@ -25,8 +25,12 @@ export class AuthEffects {
                         loginSuccess({ user: { accessToken: response.data.accessToken, refreshToken: response.data.refreshToken }, redirect: true, statusCode: response.status })
                     ),
                     catchError((error) => {
-                        console.log('Login error:', error.error.message, 'Status code:', error.status);
-                        return of(loginFail({ error: error.error.message, statusCode: error.status }))
+                        const message = error.status === 504
+                            ? 'Gateway Timeout: The server took too long to respond. Please try again.'
+                            : error.error?.message || 'An unexpected error occurred.';
+                        console.log('Login error:', message, 'Status code:', error.status);
+                        this._snackBar.open(message, 'Close', { duration: 3000 });
+                        return of(loginFail({ error: message, statusCode: error.status }))
                     })
                 )
             )
