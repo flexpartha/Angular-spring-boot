@@ -23,7 +23,7 @@ export class AuthEffects {
                         loginSuccess({ user: { accessToken: response.data.accessToken, refreshToken: response.data.refreshToken }, redirect: true, statusCode: response.status })
                     ),
                     catchError((error) => {
-                        const message = error.error?.message || 'An unexpected error occurred.';
+                        const message = error.error?.message;
                         return of(loginFail({ error: message, statusCode: error.status }))
                     })
                 )
