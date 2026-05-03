@@ -24,8 +24,8 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
   return next(req).pipe(
     catchError((error: HttpErrorResponse) => {
       const message =
-        ERROR_MESSAGES[error.status === 504 ? 504 : error.status] ||
-        error.error?.message ||
+        ERROR_MESSAGES[error.status] ||
+        (typeof error.error?.message === 'string' ? error.error.message : null) ||
         'An unexpected error occurred.';
       snackBar.open(message, 'Close', { duration: 3000 });
       return throwError(() => error);
