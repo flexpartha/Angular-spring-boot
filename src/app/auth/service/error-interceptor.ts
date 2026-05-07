@@ -5,7 +5,8 @@ import { catchError, throwError } from 'rxjs';
 
 const ERROR_MESSAGES: Record<number, string> = {
   400: 'Bad Request: Invalid data submitted.',
-  401: 'Unauthorized: Please log in again.',
+  //401: 'Unauthorized: Please log in again.',
+  401: '',
   403: 'Forbidden: You do not have permission.',
   404: 'Not Found: The requested resource does not exist.',
   408: 'Request Timeout: The server timed out.',

@@ -39,10 +39,9 @@ export class Login implements OnInit {
 
   ngOnInit() {
     this.store.select(getAuthMessage)
-      .pipe(filter(auth => !!auth.message))
-      .subscribe(({ message, statusCode }) => {
-        const panelClass = statusCode === 200 ? 'snack-success' : 'snack-error';
-        this.snackBar.open(message ?? '', 'Close', { duration: 3000, panelClass });
+      .pipe(filter(auth => !!auth.message && !!auth.statusCode && auth.statusCode >= 200 && auth.statusCode < 300))
+      .subscribe(({ message }) => {
+        this.snackBar.open(message ?? '', 'Close', { duration: 3000, panelClass: ['snack-success'] });
       });
   }
 

@@ -6,6 +6,7 @@ import { Router } from "@angular/router";
 import { catchError, exhaustMap, map, of, tap, switchMap, timer, mapTo } from "rxjs";
 import { loginFail, loginStart, loginSuccess, refreshStart, refreshSuccess, refreshFail } from "./auth.action";
 import { LoginResponse } from "../models/login.interface";
+import { MatSnackBar } from "@angular/material/snack-bar";
 
 @Injectable()
 export class AuthEffects {
@@ -13,7 +14,7 @@ export class AuthEffects {
     private authServ = inject(Authservice);
     private store = inject(Store);
     private _router = inject(Router);
-
+    private _snackBar = inject(MatSnackBar);
     login$ = createEffect(() =>
         this.actions$.pipe(
             ofType(loginStart),
@@ -56,6 +57,20 @@ export class AuthEffects {
         );
     }, { dispatch: false })
 
+    // loginFail$ = createEffect(() => {
+    //     return this.actions$.pipe(
+    //         ofType(loginFail),
+    //         tap((action) => {
+    //             this._snackBar.open(action.error || 'Login failed', 'Close', {
+    //                 duration: 5000,
+    //                 panelClass: ['snack-error']
+    //             });
+    //             localStorage.removeItem('authToken');
+    //             localStorage.removeItem('refreshToken');
+    //         })
+    //     );
+    // }, { dispatch: false });
+
     // Effect to start silent refresh timer after login or after a successful refresh
     startRefreshTimer$ = createEffect(() => {
         return this.actions$.pipe(
@@ -78,7 +93,7 @@ export class AuthEffects {
                     return of(refreshFail({ error: 'Invalid or expired refresh token' }));
                 }
                 return this.authServ.refreshToken(refresh).pipe(
-                    map((resp: any) => {
+                    map((resp: LoginResponse) => {
                         const newAccess = resp.data?.accessToken;
                         const newRefresh = resp.data?.refreshToken;
                         if (!newAccess) {
@@ -88,6 +103,7 @@ export class AuthEffects {
                         if (newRefresh) {
                             localStorage.setItem('refreshToken', newRefresh);
                         }
+                        this._snackBar.open('Token refreshed silently after one minute', 'Close', { duration: 3000 });
                         return refreshSuccess({ accessToken: newAccess, refreshToken: newRefresh });
                     }),
                     catchError((err) => {
