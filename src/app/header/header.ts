@@ -1,6 +1,4 @@
-import { Component } from '@angular/core';
-import { Router } from '@angular/router';
-import { Store } from '@ngrx/store';
+import { Component } from '@angular/core';import { Store } from '@ngrx/store';
 import { logout } from '../auth/state/auth.action';
 import { AuthState } from '../auth/state/auth.state';
 
@@ -11,12 +9,9 @@ import { AuthState } from '../auth/state/auth.state';
     styleUrl: './header.css'
 })
 export class Header {
-    constructor(private store: Store<AuthState>, private router: Router) { }
+    constructor(private store: Store<AuthState>) { }
 
     onLogout() {
         this.store.dispatch(logout());
-        localStorage.removeItem('authToken');
-        localStorage.removeItem('refreshToken');
-        this.router.navigate(['/login']);
     }
 }

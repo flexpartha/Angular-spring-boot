@@ -3,8 +3,9 @@ import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { Authservice } from "../service/authservice";
 import { Store } from "@ngrx/store";
 import { Router } from "@angular/router";
-import { catchError, exhaustMap, map, of, tap, switchMap, timer, mapTo } from "rxjs";
-import { loginFail, loginStart, loginSuccess, refreshStart, refreshSuccess, refreshFail } from "./auth.action";
+import { catchError, exhaustMap, map, of, tap, switchMap, timer, takeUntil } from "rxjs";
+import { Subject } from "rxjs";
+import { loginFail, loginStart, loginSuccess, logout, sessionExpired, refreshStart, refreshSuccess, refreshFail } from "./auth.action";
 import { LoginResponse } from "../models/login.interface";
 import { MatSnackBar } from "@angular/material/snack-bar";
 
@@ -15,106 +16,122 @@ export class AuthEffects {
     private store = inject(Store);
     private _router = inject(Router);
     private _snackBar = inject(MatSnackBar);
+
+    private cancelTimer$ = new Subject<void>();
+
     login$ = createEffect(() =>
         this.actions$.pipe(
             ofType(loginStart),
             exhaustMap((action) =>
                 this.authServ.login(action.username, action.email).pipe(
-                    map((response: LoginResponse) =>
-                        loginSuccess({ user: { accessToken: response.data.accessToken, refreshToken: response.data.refreshToken }, redirect: true, statusCode: response.status })
-                    ),
-                    catchError((error) => {
-                        const message = error.error?.message;
-                        return of(loginFail({ error: message, statusCode: error.status }))
+                    map((response: LoginResponse) => {
+                        console.log('Login response:', response);
+                        return loginSuccess({
+                            user: { accessToken: response.data.accessToken, refreshToken: response.data.refreshToken },
+                            redirect: true,
+                            statusCode: response.status
+                        });
+                    }),
+                    catchError((error) =>
+                        of(loginFail({ error: error.error?.message, statusCode: error.status }))
+                    )
+                )
+            )
+        )
+    );
+
+    // Save to sessionStorage and navigate after login
+    loginSuccess$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(loginSuccess),
+            tap((action) => {
+                sessionStorage.setItem('loggedIn', 'true');
+                if (action.user.refreshToken) {
+                    sessionStorage.setItem('refreshToken', action.user.refreshToken);
+                }
+                if (action.redirect) {
+                    this._router.navigate(['/userlist']);
+                }
+            })
+        ), { dispatch: false });
+
+    // Start 1 min timer after login — dispatches refreshStart({ silent: false })
+    startTimerAfterLogin$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(loginSuccess),
+            switchMap(() =>
+                timer(60000).pipe(
+                    takeUntil(this.cancelTimer$),
+                    map(() => refreshStart({ silent: false }))
+                )
+            )
+        )
+    );
+
+    // Restart 1 min timer after each successful timer-based refresh OR page reload restore
+    restartTimerAfterRefresh$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(refreshSuccess),
+            switchMap(() =>
+                timer(60000).pipe(
+                    takeUntil(this.cancelTimer$),
+                    map(() => refreshStart({ silent: false }))
+                )
+            )
+        )
+    );
+
+    // Perform token refresh
+    refreshToken$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(refreshStart),
+            switchMap((action) =>
+                this.authServ.refreshToken(action.silent).pipe(
+                    map((resp: LoginResponse) => {
+                        const newAccess = resp.data?.accessToken;
+                        const newRefresh = resp.data?.refreshToken;
+                        if (!newAccess) throw new Error('Refresh failed');
+                        if (newRefresh) sessionStorage.setItem('refreshToken', newRefresh);
+                        if (!action.silent) {
+                            this._snackBar.open('Session restored', 'Close', { duration: 3000, panelClass: ['snack-success']});
+                        }
+                        return refreshSuccess({ accessToken: newAccess, refreshToken: newRefresh });
+                    }),
+                    catchError((err: { error?: { message?: string } }) => {
+                        if (!action.silent) {
+                            this.cancelTimer$.next();
+                            sessionStorage.removeItem('loggedIn');
+                            sessionStorage.removeItem('refreshToken');
+                            this._router.navigate(['/login']);
+                            return of(sessionExpired());
+                        }
+                        return of(refreshFail({ error: err?.error?.message ?? 'Refresh failed' }));
                     })
                 )
             )
         )
     );
 
-    // Effect to store auth tokens in localStorage for persistence across refreshes
-    loginStoreToken$ = createEffect(() => this.actions$.pipe(
-        ofType(loginSuccess),
-        tap((action) => {
-            console.log(action.user.accessToken);
-            // Save token securely; in a real app consider HttpOnly cookies or secure storage
-            localStorage.setItem('authToken', action.user.accessToken);
-            if (action.user.refreshToken) {
-                localStorage.setItem('refreshToken', action.user.refreshToken);
-            }
-        })
-    ), { dispatch: false });
-
-    // Effect to navigate to userlist after successful login
-    loginredirect$ = createEffect(() => {
-        return this.actions$.pipe(
-            ofType(loginSuccess),
-            tap((action) => {
-                if (action.redirect) {
-                    this._router.navigate(['/userlist']);
-                }
-            })
-        );
-    }, { dispatch: false })
-
-    // loginFail$ = createEffect(() => {
-    //     return this.actions$.pipe(
-    //         ofType(loginFail),
-    //         tap((action) => {
-    //             this._snackBar.open(action.error || 'Login failed', 'Close', {
-    //                 duration: 5000,
-    //                 panelClass: ['snack-error']
-    //             });
-    //             localStorage.removeItem('authToken');
-    //             localStorage.removeItem('refreshToken');
-    //         })
-    //     );
-    // }, { dispatch: false });
-
-    // Effect to start silent refresh timer after login or after a successful refresh
-    startRefreshTimer$ = createEffect(() => {
-        return this.actions$.pipe(
-            ofType(loginSuccess, refreshSuccess),
-            // Wait 1 minute then dispatch refresh start
-            switchMap(() => timer(60000).pipe(mapTo(refreshStart())))
-        );
-    });
-
-    // Effect to perform token refresh
-    refreshToken$ = createEffect(() => {
-        return this.actions$.pipe(
-            ofType(refreshStart),
-            switchMap(() => {
-                const refresh = localStorage.getItem('refreshToken');
-                if (!refresh) {
-                    localStorage.removeItem('authToken');
-                    localStorage.removeItem('refreshToken');
-                    this._router.navigate(['/login']);
-                    return of(refreshFail({ error: 'Invalid or expired refresh token' }));
-                }
-                return this.authServ.refreshToken(refresh).pipe(
-                    map((resp: LoginResponse) => {
-                        const newAccess = resp.data?.accessToken;
-                        const newRefresh = resp.data?.refreshToken;
-                        if (!newAccess) {
-                            throw { error: { message: 'Refresh failed' } };
-                        }
-                        localStorage.setItem('authToken', newAccess);
-                        if (newRefresh) {
-                            localStorage.setItem('refreshToken', newRefresh);
-                        }
-                        this._snackBar.open('Token refreshed silently after one minute', 'Close', { duration: 3000 });
-                        return refreshSuccess({ accessToken: newAccess, refreshToken: newRefresh });
-                    }),
-                    catchError((err) => {
-                        localStorage.removeItem('authToken');
-                        localStorage.removeItem('refreshToken');
+    logout$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(logout),
+            tap(() => this.cancelTimer$.next()),
+            switchMap(() =>
+                this.authServ.logout().pipe(
+                    tap((resp: LoginResponse) => {
+                        sessionStorage.removeItem('loggedIn');
+                        sessionStorage.removeItem('refreshToken');
+                        this._snackBar.open(resp.message, 'Close', { duration: 3000, panelClass: ['snack-success']});
                         this._router.navigate(['/login']);
-                        return of(refreshFail({ error: err?.error?.message || 'Refresh failed' }));
+                    }),
+                    catchError(() => {
+                        sessionStorage.removeItem('loggedIn');
+                        sessionStorage.removeItem('refreshToken');
+                        this._router.navigate(['/login']);
+                        return of(null);
                     })
-                );
-            })
-        );
-    });
-
+                )
+            )
+        ), { dispatch: false }
+    )
 }

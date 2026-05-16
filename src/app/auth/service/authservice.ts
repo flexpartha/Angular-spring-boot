@@ -15,8 +15,13 @@ export class Authservice {
     return this._http.post<LoginResponse>(`${this._baseUrl}/auth/login`, { username, email });
   }
 
-  refreshToken(refreshToken: string): Observable<LoginResponse> {
-    return this._http.post<LoginResponse>(`${this._baseUrl}/auth/refresh`, { refreshToken });
+  refreshToken(silent: boolean): Observable<LoginResponse> {
+    const token = sessionStorage.getItem('refreshToken');
+    const headers: Record<string, string> = silent ? { 'X-Silent': 'true' } : {};
+    return this._http.post<LoginResponse>(`${this._baseUrl}/auth/refresh`, { refreshToken: token }, { withCredentials: true, headers });
   }
 
+  logout(): Observable<LoginResponse> {
+    return this._http.post<LoginResponse>(`${this._baseUrl}/auth/logout`, {});
+  }
 }

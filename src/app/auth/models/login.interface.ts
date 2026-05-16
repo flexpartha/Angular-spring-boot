@@ -3,7 +3,8 @@ export interface LoginResponse {
     "message": string,
     "data": {
         "accessToken": string;
-        "refreshToken": string;
+        "userName": string;
+        "refreshToken"?: string;
     },
     "error": string,
 }

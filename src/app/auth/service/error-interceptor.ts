@@ -5,8 +5,6 @@ import { catchError, throwError } from 'rxjs';
 
 const ERROR_MESSAGES: Record<number, string> = {
   400: 'Bad Request: Invalid data submitted.',
-  //401: 'Unauthorized: Please log in again.',
-  401: '',
   403: 'Forbidden: You do not have permission.',
   404: 'Not Found: The requested resource does not exist.',
   408: 'Request Timeout: The server timed out.',
@@ -24,11 +22,14 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
 
   return next(req).pipe(
     catchError((error: HttpErrorResponse) => {
-      const message =
-        ERROR_MESSAGES[error.status] ||
-        (typeof error.error?.message === 'string' ? error.error.message : null) ||
-        'An unexpected error occurred.';
-      snackBar.open(message, 'Close', { duration: 3000 });
+      const isSilentRefresh = req.url.includes('/auth/refresh') && req.headers.has('X-Silent');
+      if (!isSilentRefresh) {
+        const message =
+          ERROR_MESSAGES[error.status] ||
+          (typeof error.error?.message === 'string' ? error.error.message : null) ||
+          'An unexpected error occurred.';
+        if (message) snackBar.open(message, 'Close', { duration: 3000, panelClass: ['snack-error'] });
+      }
       return throwError(() => error);
     })
   );

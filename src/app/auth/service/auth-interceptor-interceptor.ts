@@ -10,11 +10,11 @@ export const authInterceptorInterceptor: HttpInterceptorFn = (req, next) => {
   return store.select(getAuthToken).pipe(
     take(1),
     exhaustMap((token) => {
-      if (!token) {
-        const stored = localStorage.getItem('authToken');
-        if (!stored || stored === 'undefined') return next(req);
-        token = stored;
-      }
+      // if (!token) {
+      //   const stored = localStorage.getItem('authToken');
+      //   if (!stored || stored === 'undefined') return next(req);
+      //   token = stored;
+      // }
       const authReq = req.clone({
         setHeaders: { Authorization: `Bearer ${token}` }
       });
