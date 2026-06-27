@@ -10,18 +10,43 @@ import { errorInterceptor } from './auth/service/error-interceptor';
 import { AppReducer } from './store/app.state';
 import { AuthEffects } from './auth/state/auth.effects';
 import { refreshFail, refreshStart } from './auth/state/auth.action';
+import { provideOAuthClient, OAuthService, AuthConfig } from 'angular-oauth2-oidc';
+import { initAuth } from './auth/init-auth';
+
 export const API_BASE_URL = new InjectionToken<string>('API_BASE_URL');
 
-function initAuth() {
-  const store = inject(Store);
-  return () => {
-    if (sessionStorage.getItem('loggedIn')) {
-      store.dispatch(refreshStart({ silent: true }));
-    } else {
-      store.dispatch(refreshFail({ error: '' }));
-    }
-  };
-}
+// export const googleAuthConfig: AuthConfig = {
+//   issuer: 'https://accounts.google.com',
+//   redirectUri: window.location.origin,
+//   clientId: '862897604339-p9pkrknk2jojoq5rt75vfcqipup0q01h.apps.googleusercontent.com',
+//   scope: 'openid profile email',
+//   responseType: 'code',
+//   oidc: true,
+//   strictDiscoveryDocumentValidation: false,
+//   skipIssuerCheck: true,
+//   clearHashAfterLogin: false,
+//   useSilentRefresh: false,
+// };
+
+// function initAuth() {
+//   const store = inject(Store);
+//   const oauthService = inject(OAuthService);
+//   return async () => {
+//     oauthService.configure(googleAuthConfig);
+//     oauthService.setStorage(sessionStorage);
+//     try {
+//       await oauthService.loadDiscoveryDocument('https://accounts.google.com/.well-known/openid-configuration');
+//       await oauthService.tryLoginCodeFlow();
+//     } catch (_) {
+//       // discovery failure should not block the app
+//     }
+//     if (sessionStorage.getItem('loggedIn')) {
+//       store.dispatch(refreshStart({ silent: true }));
+//     } else {
+//       store.dispatch(refreshFail({ error: '' }));
+//     }
+//   };
+// }
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -32,6 +57,12 @@ export const appConfig: ApplicationConfig = {
     provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }),
     provideEffects(AuthEffects),
     { provide: API_BASE_URL, useValue: '/api' },
-   { provide: APP_INITIALIZER, useFactory: initAuth, multi: true }
+    { provide: APP_INITIALIZER, useFactory: initAuth, multi: true },
+    provideOAuthClient({
+      resourceServer: {
+        allowedUrls: ['/api'],
+        sendAccessToken: false,
+      }
+    }),
   ]
 };

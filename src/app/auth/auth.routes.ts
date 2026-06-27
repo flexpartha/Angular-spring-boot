@@ -6,14 +6,18 @@ import { Login } from "./login/login";
 // import { errorInterceptor } from "./service/error-interceptor";
  import { AuthEffects } from "./state/auth.effects";
  import { provideEffects } from "@ngrx/effects";
+import { GoogleCallback } from "./google-callback/google-callback";
 
 export const authRoutes: Routes = [
     {
         path: '', component: Login,
-        providers: [
-            //Authservice,
-           // provideHttpClient(withInterceptors([authInterceptorInterceptor, errorInterceptor])),
-            //provideEffects(AuthEffects),
-        ]
-    }
+        // providers: [
+        //     //Authservice,
+        //    // provideHttpClient(withInterceptors([authInterceptorInterceptor, errorInterceptor])),
+        //     //provideEffects(AuthEffects),
+        // ]
+    },
+    // {
+    //     path: 'auth/callback', component: GoogleCallback
+    // }
 ]

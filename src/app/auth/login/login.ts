@@ -11,6 +11,7 @@ import { loginStart } from '../state/auth.action';
 import { getAuthLoading, getAuthMessage } from '../state/auth.selector';
 import { AuthState } from '../state/auth.state';
 import { AsyncPipe } from '@angular/common';
+import { OAuthService } from 'angular-oauth2-oidc';
 
 @Component({
   selector: 'app-login',
@@ -29,6 +30,7 @@ export class Login implements OnInit {
   private store = inject(Store<AuthState>);
   private fb = inject(FormBuilder);
   private snackBar = inject(MatSnackBar);
+  private oauthService = inject(OAuthService);
 
   isLoading$ = this.store.select(getAuthLoading);
 
@@ -38,16 +40,40 @@ export class Login implements OnInit {
   });
 
   ngOnInit() {
+
+   const url = new URL(window.location.href);
+    const isGoogleCallback = url.pathname.includes('/auth/callback');
+    const hasAuthCode = url.searchParams.get('code') !== null;
+
+    // Preserve the PKCE verifier when Google has redirected back with an auth code.
+    if (!isGoogleCallback && !hasAuthCode) {
+      sessionStorage.removeItem('PKCE_verifier');
+      sessionStorage.removeItem('codeVerifier');
+    }
+
     this.store.select(getAuthMessage)
       .pipe(filter(auth => !!auth.message && !!auth.statusCode && auth.statusCode >= 200 && auth.statusCode < 300))
       .subscribe(({ message }) => {
         this.snackBar.open(message ?? '', 'Close', { duration: 3000, panelClass: ['snack-success'] });
       });
+
+    // After redirect back from Google, extract user info and dispatch loginStart
+    if (this.oauthService.hasValidIdToken()) {
+      const claims = this.oauthService.getIdentityClaims() as { name?: string; email?: string };
+      this.store.dispatch(loginStart({
+        username: claims?.name ?? '',
+        email: claims?.email ?? ''
+      }));
+    }
   }
 
   onSubmit() {
     if (this.loginForm.invalid) return;
     const { username, email } = this.loginForm.value;
     this.store.dispatch(loginStart({ username: username ?? '', email: email ?? '' }));
+  }
+
+  loginWithGoogle() {
+    this.oauthService.initCodeFlow();
   }
 }

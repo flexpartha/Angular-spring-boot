@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { canLoadGuard } from './auth/can-load.guard';
+import { GoogleCallback } from './auth/google-callback/google-callback';
 
 export const routes: Routes = [
     {
@@ -16,5 +17,8 @@ export const routes: Routes = [
         path: 'userlist',
         canMatch: [canLoadGuard],
         loadChildren: () => import('./user-detail/user.routes').then(m => m.userRoutes)
-    }
+    },
+    // {
+    //         path: 'auth/callback', component: GoogleCallback
+    // }
 ];

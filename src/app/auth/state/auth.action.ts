@@ -24,5 +24,23 @@ export const logout = createAction(LOGOUT_ACTION);
 export const sessionExpired = createAction('[auth] Session Expired');
 
 export const refreshStart = createAction('[auth] Refresh Token Start', props<{ silent: boolean }>());
-export const refreshSuccess = createAction('[auth] Refresh Token Success', props<{ accessToken: string; refreshToken?: string }>());
+export const refreshSuccess = createAction('[auth] Refresh Token Success', props<{ accessToken: string; }>());
 export const refreshFail = createAction('[auth] Refresh Token Fail', props<{ error: string }>());
+
+
+//google Oauth2 section
+
+export const googleLoginStart = createAction(
+    '[Auth] Google Login Start',
+    props<{ code: string }>()                     
+);
+
+export const googleLoginSuccess = createAction(
+    '[Auth] Google Login Success',
+    props<{ user: User; redirect: boolean; statusCode: number }>()
+);
+
+export const googleLoginFail = createAction(
+    '[Auth] Google Login Fail',
+    props<{ error: string; statusCode: number }>()
+);
