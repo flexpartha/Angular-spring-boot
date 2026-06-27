@@ -2,11 +2,10 @@
 FROM node:24-alpine AS build
 WORKDIR /app
 COPY package*.json ./
-# Use npm ci for reproducible installs and skip optional native deps that often
-# fail on Linux containers (e.g. macOS-only native optional packages).
-# `npm ci` requires package-lock.json; if you don't have one in CI, npm install
-# can be used instead. Omitting optional deps avoids native build failures.
-RUN npm ci --omit=optional
+# Use npm install in Docker to avoid CI lockfile strictness in the build container.
+# Omitting optional deps avoids native build failures for packages that only target
+# non-Linux platforms.
+RUN npm install --omit=optional
 COPY . .
 RUN npm run build -- --configuration production
 
