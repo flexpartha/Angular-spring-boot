@@ -1,9 +1,11 @@
 # Build stage
-FROM node:24-bullseye-slim AS build
+FROM node:24-alpine AS build
 WORKDIR /app
 COPY package*.json ./
-# Use npm ci for reproducible installs and skip optional native deps.
-# Debian-based image is more compatible than Alpine for npm install.
+# Use npm ci for reproducible installs and skip optional native deps that often
+# fail on Linux containers (e.g. macOS-only native optional packages).
+# `npm ci` requires package-lock.json; if you don't have one in CI, npm install
+# can be used instead. Omitting optional deps avoids native build failures.
 RUN npm ci --omit=optional
 COPY . .
 RUN npm run build -- --configuration production

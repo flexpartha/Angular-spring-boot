@@ -36,9 +36,10 @@ export class App {
           if (code) {
             // This will trigger the effect chain we are about to add.
             this.store.dispatch(googleLoginStart({ code }));
-          } else {
-            // No code – something went wrong, send the user back to the login page.
-            this.router.navigate(['/login']);
-          }
+          } 
+          // else {
+          //   // No code – something went wrong, send the user back to the login page.
+          //   this.router.navigate(['/login']);
+          // }
   }
 }
