@@ -1,4 +1,4 @@
-import { inject, Injectable, signal } from "@angular/core";
+import { inject, Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { Authservice } from "../service/authservice";
 import { Store } from "@ngrx/store";
@@ -26,12 +26,12 @@ export class AuthEffects {
             exhaustMap((action) =>
                 this.authServ.login(action.username, action.email).pipe(
                     map((response: LoginResponse) => {
-                        console.log('Login response:', response);
                         sessionStorage.setItem('userName', response.data.userName);
                         return loginSuccess({
                             user: { accessToken: response.data.accessToken },
                             redirect: true,
-                            statusCode: response.status
+                            statusCode: response.status,
+                            message: response.message   // ← backend already translated
                         });
                     }),
                     catchError((error) =>
@@ -42,23 +42,25 @@ export class AuthEffects {
         )
     );
 
-    // Save to sessionStorage and navigate after login
     loginSuccess$ = createEffect(() =>
         this.actions$.pipe(
             ofType(loginSuccess, googleLoginSuccess),
             tap((action) => {
+                this._snackBar.open(action.message, 'Close', { duration: 3000, panelClass: ['snack-success'] });
                 this.handlePostLogin(action);
                 sessionStorage.removeItem('PKCE_verifier');
                 sessionStorage.removeItem('codeVerifier');
-                // sessionStorage.setItem('loggedIn', 'true');
-                // if (action.user.refreshToken) {
-                //     sessionStorage.setItem('refreshToken', action.user.refreshToken);
-                // }
-                // if (action.redirect) {
-                //     this._router.navigate(['/userlist']);
-                // }
             })
         ), { dispatch: false });
+
+    // loginFail$ = createEffect(() =>
+    //     this.actions$.pipe(
+    //         ofType(loginFail),
+    //         tap(({ error }) => {
+    //             this._snackBar.open(error, 'Close', { duration: 5000, panelClass: ['snack-error'] });
+    //         })
+    //     ), { dispatch: false }
+    // );
 
     googleLogin$ = createEffect(() =>
         this.actions$.pipe(
@@ -66,12 +68,12 @@ export class AuthEffects {
             exhaustMap((action) =>
                 this.authServ.googleLogin(action.code).pipe(
                     map((response: LoginResponse) => {
-                        console.log('google-Login response:', response);
                         sessionStorage.setItem('userName', response.data.userName);
                         return googleLoginSuccess({
                             user: { accessToken: response.data.accessToken },
                             redirect: true,
-                            statusCode: response.status
+                            statusCode: response.status,
+                            message: response.message   // ← backend already translated
                         });
                     }),
                     catchError((error) =>
@@ -86,16 +88,13 @@ export class AuthEffects {
         this.actions$.pipe(
             ofType(googleLoginFail),
             tap(({ error }) => {
-                this._snackBar.open(`Google login failed: ${error}`, 'Close', {
-                    duration: 5000,
-                    panelClass: ['snack-error'],
-                });
+                this._snackBar.open(error, 'Close', { duration: 5000, panelClass: ['snack-error'] });
                 this._router.navigate(['/login']);
             })
         ),
         { dispatch: false }
     );
-    // Start 1 min timer after login — dispatches refreshStart({ silent: false })
+
     startTimerAfterLogin$ = createEffect(() =>
         this.actions$.pipe(
             ofType(loginSuccess, googleLoginSuccess),
@@ -108,7 +107,6 @@ export class AuthEffects {
         )
     );
 
-    // Restart 1 min timer after each successful timer-based refresh OR page reload restore
     restartTimerAfterRefresh$ = createEffect(() =>
         this.actions$.pipe(
             ofType(refreshSuccess),
@@ -121,20 +119,16 @@ export class AuthEffects {
         )
     );
 
-    // Perform token refresh
     refreshToken$ = createEffect(() =>
         this.actions$.pipe(
             ofType(refreshStart),
             switchMap((action) =>
                 this.authServ.refreshToken(action.silent).pipe(
                     map((resp: LoginResponse) => {
-                        console.log('Refresh response:', resp);
                         const newAccess = resp.data?.accessToken;
-                        //const newRefresh = resp.data?.refreshToken;
                         if (!newAccess) throw new Error('Refresh failed');
-                        //if (newRefresh) sessionStorage.setItem('refreshToken', newRefresh);
                         if (!action.silent) {
-                            this._snackBar.open('Session restored', 'Close', { duration: 3000, panelClass: ['snack-success'] });
+                            this._snackBar.open(resp.message, 'Close', { duration: 3000, panelClass: ['snack-success'] });
                         }
                         return refreshSuccess({ accessToken: newAccess });
                     }),
@@ -174,14 +168,10 @@ export class AuthEffects {
                 )
             )
         ), { dispatch: false }
-    )
-
+    );
 
     private handlePostLogin(action: { user: User; redirect: boolean }) {
         sessionStorage.setItem('loggedIn', 'true');
-        // if (action.user.refreshToken) {
-        //     sessionStorage.setItem('refreshToken', action.user.refreshToken);
-        // }
         if (action.redirect) {
             this._router.navigate(['/userlist']);
         }

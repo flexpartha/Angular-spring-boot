@@ -1,0 +1,102 @@
+{
+  "HEADER": {
+    "APP_NAME": "Min App",
+    "WELCOME": "Välkommen",
+    "LOGOUT": "Logga ut"
+  },
+  "LOGIN": {
+    "TITLE": "Logga in",
+    "USERNAME": "Användarnamn",
+    "EMAIL": "E-post",
+    "USERNAME_PLACEHOLDER": "Ange användarnamn",
+    "EMAIL_PLACEHOLDER": "Ange e-post",
+    "PASSWORD": "Lösenord",
+    "PASSWORD_PLACEHOLDER": "Ange lösenord",
+    "SIGNIN": "Logga in",
+    "CANCEL": "Avbryt",
+    "ERROR": "Ogiltigt användarnamn eller lösenord",
+    "LOGIN_WITH_GOOGLE": "Logga in med Google",
+    "OR": "eller"
+  },
+  "USERLIST": {
+    "TITLE": "Användarhantering",
+    "ADD_USER": "Lägg till Användare",
+    "SEARCH_LABEL": "Sök Användare",
+    "SEARCH_PLACEHOLDER": "Namn, Användarnamn, E-post eller Telefon",
+    "LOADING": "Laddar användare...",
+    "NO_USERS": "Inga användare hittades",
+    "COL_ID": "ID",
+    "COL_NAME": "Namn",
+    "COL_USERNAME": "Användarnamn",
+    "COL_EMAIL": "E-post",
+    "COL_PHONE": "Telefon",
+    "COL_WEBSITE": "Webbplats",
+    "COL_ACTIONS": "Åtgärder",
+    "TOOLTIP_EDIT": "Redigera",
+    "TOOLTIP_DELETE": "Ta bort",
+    "CONFIRM_DELETE": "Är du säker på att du vill ta bort den här användaren?",
+    "DELETE": "Ta bort"
+  },
+  "ADDUSER": {
+    "TITLE": "Lägg till Ny Användare",
+    "ADDING": "Lägger till användare...",
+    "SUBMIT": "Lägg till Användare",
+    "CANCEL": "Avbryt"
+  },
+  "EDITUSER": {
+    "TITLE": "Redigera Användare",
+    "UPDATING": "Uppdaterar användare...",
+    "SUBMIT": "Uppdatera Användare",
+    "CANCEL": "Avbryt"
+  },
+  "FORM": {
+    "BASIC_INFO": "Grundläggande Information",
+    "ADDRESS": "Adress",
+    "COMPANY": "Företag",
+    "USER_ID": "Användar-ID",
+    "NAME": "Namn",
+    "NAME_PLACEHOLDER": "Ange fullständigt namn",
+    "NAME_ERROR": "Namn krävs (minst 2 tecken)",
+    "USERNAME": "Användarnamn",
+    "USERNAME_PLACEHOLDER": "Ange användarnamn",
+    "USERNAME_ERROR": "Användarnamn krävs (minst 3 tecken)",
+    "EMAIL": "E-post",
+    "EMAIL_PLACEHOLDER": "Ange e-postadress",
+    "EMAIL_ERROR": "En giltig e-postadress krävs",
+    "PHONE": "Telefon",
+    "PHONE_PLACEHOLDER": "Ange telefonnummer",
+    "PHONE_ERROR": "Telefon krävs",
+    "WEBSITE": "Webbplats",
+    "WEBSITE_PLACEHOLDER": "Ange webbplatsens URL",
+    "WEBSITE_ERROR": "Webbplats krävs",
+    "STREET": "Gata",
+    "STREET_PLACEHOLDER": "Ange gatuadress",
+    "STREET_ERROR": "Gata krävs",
+    "SUITE": "Lägenhet",
+    "SUITE_PLACEHOLDER": "Ange lägenhetsnummer",
+    "CITY": "Stad",
+    "CITY_PLACEHOLDER": "Ange stad",
+    "CITY_ERROR": "Stad krävs",
+    "ZIPCODE": "Postnummer",
+    "ZIPCODE_PLACEHOLDER": "Ange postnummer",
+    "ZIPCODE_ERROR": "Postnummer krävs",
+    "COMPANY_NAME": "Företagsnamn",
+    "COMPANY_NAME_PLACEHOLDER": "Ange företagsnamn",
+    "CATCH_PHRASE": "Slagord",
+    "CATCH_PHRASE_PLACEHOLDER": "Ange slagord",
+    "BUSINESS_FIELD": "Affärsområde",
+    "BUSINESS_FIELD_PLACEHOLDER": "Ange affärsområde"
+  },
+  "AUTH": {
+    "LOGIN_SUCCESS": "Inloggning lyckades",
+    "GOOGLE_LOGIN_SUCCESS": "Google-inloggning lyckades",
+    "LOGOUT_SUCCESS": "Utloggning lyckades",
+    "SESSION_RESTORED": "Sessionen återställdes",
+    "INVALID_CREDENTIALS": "Ogiltigt användarnamn eller e-post"
+  },
+  "LANG": {
+    "EN": "Engelska",
+    "FR": "Franska",
+    "SV": "Svenska"
+  }
+}

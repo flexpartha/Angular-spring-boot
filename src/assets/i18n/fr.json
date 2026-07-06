@@ -1,0 +1,102 @@
+{
+  "HEADER": {
+    "APP_NAME": "Mon Application",
+    "WELCOME": "Bienvenue",
+    "LOGOUT": "Déconnexion"
+  },
+  "LOGIN": {
+    "TITLE": "Connexion",
+    "USERNAME": "Nom d'utilisateur",
+    "EMAIL": "Email",
+    "USERNAME_PLACEHOLDER": "Entrez le nom d'utilisateur",
+    "EMAIL_PLACEHOLDER": "Entrez l'email",
+    "PASSWORD": "Mot de passe",
+    "PASSWORD_PLACEHOLDER": "Entrez le mot de passe",
+    "SIGNIN": "Se Connecter",
+    "CANCEL": "Annuler",
+    "ERROR": "Nom d'utilisateur ou mot de passe invalide",
+    "LOGIN_WITH_GOOGLE": "Se connecter avec Google",
+    "OR": "ou"
+  },
+  "USERLIST": {
+    "TITLE": "Gestion des Utilisateurs",
+    "ADD_USER": "Ajouter un Utilisateur",
+    "SEARCH_LABEL": "Rechercher des Utilisateurs",
+    "SEARCH_PLACEHOLDER": "Nom, Identifiant, Email ou Téléphone",
+    "LOADING": "Chargement des utilisateurs...",
+    "NO_USERS": "Aucun utilisateur trouvé",
+    "COL_ID": "ID",
+    "COL_NAME": "Nom",
+    "COL_USERNAME": "Identifiant",
+    "COL_EMAIL": "Email",
+    "COL_PHONE": "Téléphone",
+    "COL_WEBSITE": "Site Web",
+    "COL_ACTIONS": "Actions",
+    "TOOLTIP_EDIT": "Modifier",
+    "TOOLTIP_DELETE": "Supprimer",
+    "CONFIRM_DELETE": "Êtes-vous sûr de vouloir supprimer cet utilisateur ?",
+    "DELETE": "Supprimer"
+  },
+  "ADDUSER": {
+    "TITLE": "Ajouter un Nouvel Utilisateur",
+    "ADDING": "Ajout de l'utilisateur...",
+    "SUBMIT": "Ajouter l'Utilisateur",
+    "CANCEL": "Annuler"
+  },
+  "EDITUSER": {
+    "TITLE": "Modifier l'Utilisateur",
+    "UPDATING": "Mise à jour de l'utilisateur...",
+    "SUBMIT": "Mettre à Jour",
+    "CANCEL": "Annuler"
+  },
+  "FORM": {
+    "BASIC_INFO": "Informations de Base",
+    "ADDRESS": "Adresse",
+    "COMPANY": "Entreprise",
+    "USER_ID": "ID Utilisateur",
+    "NAME": "Nom",
+    "NAME_PLACEHOLDER": "Entrez le nom complet",
+    "NAME_ERROR": "Le nom est requis (minimum 2 caractères)",
+    "USERNAME": "Identifiant",
+    "USERNAME_PLACEHOLDER": "Entrez l'identifiant",
+    "USERNAME_ERROR": "L'identifiant est requis (minimum 3 caractères)",
+    "EMAIL": "Email",
+    "EMAIL_PLACEHOLDER": "Entrez l'email",
+    "EMAIL_ERROR": "Un email valide est requis",
+    "PHONE": "Téléphone",
+    "PHONE_PLACEHOLDER": "Entrez le numéro de téléphone",
+    "PHONE_ERROR": "Le téléphone est requis",
+    "WEBSITE": "Site Web",
+    "WEBSITE_PLACEHOLDER": "Entrez l'URL du site web",
+    "WEBSITE_ERROR": "Le site web est requis",
+    "STREET": "Rue",
+    "STREET_PLACEHOLDER": "Entrez l'adresse de la rue",
+    "STREET_ERROR": "La rue est requise",
+    "SUITE": "Appartement",
+    "SUITE_PLACEHOLDER": "Entrez le numéro d'appartement",
+    "CITY": "Ville",
+    "CITY_PLACEHOLDER": "Entrez la ville",
+    "CITY_ERROR": "La ville est requise",
+    "ZIPCODE": "Code Postal",
+    "ZIPCODE_PLACEHOLDER": "Entrez le code postal",
+    "ZIPCODE_ERROR": "Le code postal est requis",
+    "COMPANY_NAME": "Nom de l'Entreprise",
+    "COMPANY_NAME_PLACEHOLDER": "Entrez le nom de l'entreprise",
+    "CATCH_PHRASE": "Slogan",
+    "CATCH_PHRASE_PLACEHOLDER": "Entrez le slogan",
+    "BUSINESS_FIELD": "Secteur d'Activité",
+    "BUSINESS_FIELD_PLACEHOLDER": "Entrez le secteur d'activité"
+  },
+  "AUTH": {
+    "LOGIN_SUCCESS": "Connexion réussie",
+    "GOOGLE_LOGIN_SUCCESS": "Connexion Google réussie",
+    "LOGOUT_SUCCESS": "Déconnexion réussie",
+    "SESSION_RESTORED": "Session restaurée",
+    "INVALID_CREDENTIALS": "Nom d'utilisateur ou email invalide"
+  },
+  "LANG": {
+    "EN": "Anglais",
+    "FR": "Français",
+    "SV": "Suédois"
+  }
+}

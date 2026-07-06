@@ -11,7 +11,7 @@ const ERROR_MESSAGES: Record<number, string> = {
   409: 'Conflict: A conflict occurred with the current state.',
   422: 'Unprocessable Entity: Validation failed.',
   429: 'Too Many Requests: Please slow down.',
-  500: 'Internal Server Error: Something went wrong on the server.',
+  //500: 'Internal Server Error, Something went wrong on the server.',
   502: 'Bad Gateway: Invalid response from upstream server.',
   503: 'Service Unavailable: The server is temporarily unavailable.',
   504: 'Gateway Timeout: The server took too long to respond.Please try again later.',
@@ -28,7 +28,9 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
           ERROR_MESSAGES[error.status] ||
           (typeof error.error?.message === 'string' ? error.error.message : null) ||
           'An unexpected error occurred.';
-        if (message) snackBar.open(message, 'Close', { duration: 3000, panelClass: ['snack-error'] });
+        if (message) {
+          snackBar.open(message, 'Close', { duration: 3000, panelClass: ['snack-error'] });
+        }
       }
       return throwError(() => error);
     })

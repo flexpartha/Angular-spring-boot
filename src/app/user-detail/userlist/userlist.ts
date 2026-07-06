@@ -31,6 +31,7 @@ import {
 } from '../state/user.selector';
 import { User } from '../models/user-list.interface';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-userlist',
@@ -48,6 +49,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
     MatFormFieldModule,
     MatTooltipModule,
     FormsModule,
+    TranslateModule,
   ],
   templateUrl: './userlist.html',
   styleUrl: './userlist.css',
@@ -57,6 +59,7 @@ export class Userlist implements OnInit {
   private store = inject(Store<AppState>);
   private router = inject(Router);
   private snackBar = inject(MatSnackBar);
+  private translate = inject(TranslateService);
 
   users = toSignal(this.store.select(getUsers), { initialValue: [] });
   loading = toSignal(this.store.select(getUserLoading), { initialValue: false });
@@ -162,7 +165,9 @@ export class Userlist implements OnInit {
   }
 
   deleteUser(id: number) {
-    const snackRef = this.snackBar.open('Are you sure you want to delete this user?', 'Delete', {
+    const snackRef = this.snackBar.open(
+      this.translate.instant('USERLIST.CONFIRM_DELETE'),
+      this.translate.instant('USERLIST.DELETE'), {
       duration: 5000,
       panelClass: ['confirm-snackbar']
     });

@@ -1,19 +1,19 @@
 <header>
   <nav>
-    <span>My App</span>
-    <span></span>
-    <span></span>
-    <span></span>
-    <span></span>
-    <span></span>
-    <span></span>
-    <span></span>
-    <span></span>
-    <span></span>
-    <span></span>
-    <span>WEL COME</span>
-    <span> {{ _getUserName }} </span>
+    <span>{{ 'HEADER.APP_NAME' | translate }}</span>
+    <span>{{ 'HEADER.WELCOME' | translate }}, {{ _getUserName }}</span>
 
-    <button (click)="onLogout()">Logout</button>
+    <div class="lang-switcher">
+      @for (lang of langService.supported; track lang) {
+        <button
+          (click)="setLang(lang)"
+          [class.active]="langService.activeLang() === lang"
+        >
+          {{ 'LANG.' + lang.toUpperCase() | translate }}
+        </button>
+      }
+    </div>
+
+    <button (click)="onLogout()">{{ 'HEADER.LOGOUT' | translate }}</button>
   </nav>
 </header>

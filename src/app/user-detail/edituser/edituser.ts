@@ -29,6 +29,7 @@ import {
 } from '../state/user.selector';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { filter, take } from 'rxjs';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-edituser',
@@ -36,6 +37,7 @@ import { filter, take } from 'rxjs';
   imports: [
     CommonModule,
     ReactiveFormsModule,
+    TranslateModule,
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,

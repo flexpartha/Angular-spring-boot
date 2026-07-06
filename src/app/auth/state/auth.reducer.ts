@@ -10,7 +10,7 @@ const _authReducer = createReducer(
     on(loginSuccess, (state, action) => ({
         ...state,
         user: action.user,
-        successMessage: 'Login successful!',
+        successMessage: action.message,
         errorMessage: null,
         statusCode: action.statusCode,
         isLoading: false
@@ -39,7 +39,7 @@ const _authReducer = createReducer(
     on(googleLoginSuccess, (state, action) => ({
         ...state,
         user: action.user,
-        successMessage: 'Google login successful!',
+        successMessage: action.message,
         errorMessage: null,
         statusCode: action.statusCode,
         isLoading: false

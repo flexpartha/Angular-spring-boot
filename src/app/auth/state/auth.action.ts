@@ -12,7 +12,7 @@ export const loginStart = createAction(
 );
 export const loginSuccess = createAction(
     LOGIN_ACTION_SUCCESS,
-    props<{ user: User, redirect: boolean, statusCode: number }>()
+    props<{ user: User, redirect: boolean, statusCode: number, message: string }>()
 );
 
 export const loginFail = createAction(
@@ -37,7 +37,7 @@ export const googleLoginStart = createAction(
 
 export const googleLoginSuccess = createAction(
     '[Auth] Google Login Success',
-    props<{ user: User; redirect: boolean; statusCode: number }>()
+    props<{ user: User; redirect: boolean; statusCode: number; message: string }>()
 );
 
 export const googleLoginFail = createAction(

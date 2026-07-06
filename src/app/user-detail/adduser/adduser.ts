@@ -22,6 +22,7 @@ import { AppState } from '../../store/app.state';
 import * as UserActions from '../state/user.action';
 import { getUserLoading } from '../state/user.selector';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-adduser',
@@ -29,6 +30,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
   imports: [
     CommonModule,
     ReactiveFormsModule,
+    TranslateModule,
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,

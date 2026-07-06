@@ -1,139 +1,124 @@
 <div class="container">
   <mat-card class="form-card">
     <mat-card-header>
-      <mat-card-title>Add New User</mat-card-title>
+      <mat-card-title>{{ 'ADDUSER.TITLE' | translate }}</mat-card-title>
     </mat-card-header>
 
     <mat-card-content>
       @if (loading()) {
         <div class="loading-overlay">
           <mat-spinner diameter="40"></mat-spinner>
-          <p>Adding user...</p>
+          <p>{{ 'ADDUSER.ADDING' | translate }}</p>
         </div>
       }
 
       <form [formGroup]="userForm" (ngSubmit)="onSubmit()" [class.disabled]="loading()">
-        <!-- Basic Information Section -->
         <fieldset class="form-section">
-          <legend>Basic Information</legend>
+          <legend>{{ 'FORM.BASIC_INFO' | translate }}</legend>
 
           <mat-form-field class="full-width" appearance="outline">
-            <mat-label>Name</mat-label>
-            <input matInput formControlName="name" placeholder="Enter full name" />
+            <mat-label>{{ 'FORM.NAME' | translate }}</mat-label>
+            <input matInput formControlName="name" [placeholder]="'FORM.NAME_PLACEHOLDER' | translate" />
             @if (userForm.get('name')?.invalid && userForm.get('name')?.touched) {
-              <mat-error>Name is required (minimum 2 characters)</mat-error>
+              <mat-error>{{ 'FORM.NAME_ERROR' | translate }}</mat-error>
             }
           </mat-form-field>
 
           <mat-form-field class="full-width" appearance="outline">
-            <mat-label>Username</mat-label>
-            <input matInput formControlName="username" placeholder="Enter username" />
+            <mat-label>{{ 'FORM.USERNAME' | translate }}</mat-label>
+            <input matInput formControlName="username" [placeholder]="'FORM.USERNAME_PLACEHOLDER' | translate" />
             @if (userForm.get('username')?.invalid && userForm.get('username')?.touched) {
-              <mat-error>Username is required (minimum 3 characters)</mat-error>
+              <mat-error>{{ 'FORM.USERNAME_ERROR' | translate }}</mat-error>
             }
           </mat-form-field>
 
           <mat-form-field class="full-width" appearance="outline">
-            <mat-label>Email</mat-label>
-            <input matInput formControlName="email" type="email" placeholder="Enter email" />
+            <mat-label>{{ 'FORM.EMAIL' | translate }}</mat-label>
+            <input matInput formControlName="email" type="email" [placeholder]="'FORM.EMAIL_PLACEHOLDER' | translate" />
             @if (userForm.get('email')?.invalid && userForm.get('email')?.touched) {
-              <mat-error>Valid email is required</mat-error>
+              <mat-error>{{ 'FORM.EMAIL_ERROR' | translate }}</mat-error>
             }
           </mat-form-field>
 
           <mat-form-field class="full-width" appearance="outline">
-            <mat-label>Phone</mat-label>
-            <input matInput formControlName="phone" placeholder="Enter phone number" />
+            <mat-label>{{ 'FORM.PHONE' | translate }}</mat-label>
+            <input matInput formControlName="phone" [placeholder]="'FORM.PHONE_PLACEHOLDER' | translate" />
             @if (userForm.get('phone')?.invalid && userForm.get('phone')?.touched) {
-              <mat-error>Phone is required</mat-error>
+              <mat-error>{{ 'FORM.PHONE_ERROR' | translate }}</mat-error>
             }
           </mat-form-field>
 
           <mat-form-field class="full-width" appearance="outline">
-            <mat-label>Website</mat-label>
-            <input matInput formControlName="website" placeholder="Enter website URL" />
+            <mat-label>{{ 'FORM.WEBSITE' | translate }}</mat-label>
+            <input matInput formControlName="website" [placeholder]="'FORM.WEBSITE_PLACEHOLDER' | translate" />
             @if (userForm.get('website')?.invalid && userForm.get('website')?.touched) {
-              <mat-error>Website is required</mat-error>
+              <mat-error>{{ 'FORM.WEBSITE_ERROR' | translate }}</mat-error>
             }
           </mat-form-field>
         </fieldset>
 
-        <!-- Address Section -->
         <fieldset formGroupName="address" class="form-section">
-          <legend>Address</legend>
+          <legend>{{ 'FORM.ADDRESS' | translate }}</legend>
 
           <mat-form-field class="full-width" appearance="outline">
-            <mat-label>Street</mat-label>
-            <input matInput formControlName="street" placeholder="Enter street address" />
+            <mat-label>{{ 'FORM.STREET' | translate }}</mat-label>
+            <input matInput formControlName="street" [placeholder]="'FORM.STREET_PLACEHOLDER' | translate" />
             @if (userForm.get('address')?.get('street')?.invalid && userForm.get('address')?.get('street')?.touched) {
-              <mat-error>Street is required</mat-error>
+              <mat-error>{{ 'FORM.STREET_ERROR' | translate }}</mat-error>
             }
           </mat-form-field>
 
           <mat-form-field class="full-width" appearance="outline">
-            <mat-label>Suite</mat-label>
-            <input matInput formControlName="suite" placeholder="Enter suite/apartment" />
+            <mat-label>{{ 'FORM.SUITE' | translate }}</mat-label>
+            <input matInput formControlName="suite" [placeholder]="'FORM.SUITE_PLACEHOLDER' | translate" />
           </mat-form-field>
 
           <mat-form-field class="half-width" appearance="outline">
-            <mat-label>City</mat-label>
-            <input matInput formControlName="city" placeholder="Enter city" />
+            <mat-label>{{ 'FORM.CITY' | translate }}</mat-label>
+            <input matInput formControlName="city" [placeholder]="'FORM.CITY_PLACEHOLDER' | translate" />
             @if (userForm.get('address')?.get('city')?.invalid && userForm.get('address')?.get('city')?.touched) {
-              <mat-error>City is required</mat-error>
+              <mat-error>{{ 'FORM.CITY_ERROR' | translate }}</mat-error>
             }
           </mat-form-field>
 
           <mat-form-field class="half-width" appearance="outline">
-            <mat-label>Zip Code</mat-label>
-            <input matInput formControlName="zipcode" placeholder="Enter zip code" />
+            <mat-label>{{ 'FORM.ZIPCODE' | translate }}</mat-label>
+            <input matInput formControlName="zipcode" [placeholder]="'FORM.ZIPCODE_PLACEHOLDER' | translate" />
             @if (userForm.get('address')?.get('zipcode')?.invalid && userForm.get('address')?.get('zipcode')?.touched) {
-              <mat-error>Zip code is required</mat-error>
+              <mat-error>{{ 'FORM.ZIPCODE_ERROR' | translate }}</mat-error>
             }
           </mat-form-field>
         </fieldset>
 
-        <!-- Company Section -->
         <fieldset formGroupName="company" class="form-section">
-          <legend>Company</legend>
+          <legend>{{ 'FORM.COMPANY' | translate }}</legend>
 
           <mat-form-field class="full-width" appearance="outline">
-            <mat-label>Company Name</mat-label>
-            <input matInput formControlName="name" placeholder="Enter company name" />
+            <mat-label>{{ 'FORM.COMPANY_NAME' | translate }}</mat-label>
+            <input matInput formControlName="name" [placeholder]="'FORM.COMPANY_NAME_PLACEHOLDER' | translate" />
           </mat-form-field>
 
           <mat-form-field class="full-width" appearance="outline">
-            <mat-label>Catch Phrase</mat-label>
-            <input matInput formControlName="catchPhrase" placeholder="Enter catch phrase" />
+            <mat-label>{{ 'FORM.CATCH_PHRASE' | translate }}</mat-label>
+            <input matInput formControlName="catchPhrase" [placeholder]="'FORM.CATCH_PHRASE_PLACEHOLDER' | translate" />
           </mat-form-field>
 
           <mat-form-field class="full-width" appearance="outline">
-            <mat-label>Business Field</mat-label>
-            <input matInput formControlName="bs" placeholder="Enter business field" />
+            <mat-label>{{ 'FORM.BUSINESS_FIELD' | translate }}</mat-label>
+            <input matInput formControlName="bs" [placeholder]="'FORM.BUSINESS_FIELD_PLACEHOLDER' | translate" />
           </mat-form-field>
         </fieldset>
 
-        <!-- Form Actions -->
         <div class="form-actions">
-          <button
-            type="button"
-            mat-button
-            (click)="onCancel()"
-            [disabled]="loading()"
-          >
-            Cancel
+          <button type="button" mat-button (click)="onCancel()" [disabled]="loading()">
+            {{ 'ADDUSER.CANCEL' | translate }}
           </button>
-          <button
-            type="submit"
-            mat-raised-button
-            color="primary"
-            [disabled]="userForm.invalid || loading()"
-          >
+          <button type="submit" mat-raised-button color="primary" [disabled]="userForm.invalid || loading()">
             <mat-icon>save</mat-icon>
-            Add User
+            {{ 'ADDUSER.SUBMIT' | translate }}
           </button>
         </div>
       </form>
     </mat-card-content>
   </mat-card>
 </div>
-

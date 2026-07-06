@@ -1,0 +1,102 @@
+{
+  "HEADER": {
+    "APP_NAME": "My App",
+    "WELCOME": "Welcome",
+    "LOGOUT": "Logout"
+  },
+  "LOGIN": {
+    "TITLE": "Sign In",
+    "USERNAME": "Username",
+    "EMAIL": "Email",
+    "USERNAME_PLACEHOLDER": "Enter username",
+    "EMAIL_PLACEHOLDER": "Enter email",
+    "PASSWORD": "Password",
+    "PASSWORD_PLACEHOLDER": "Enter password",
+    "SIGNIN": "Log In",
+    "LOGIN_WITH_GOOGLE": "Sign in with Google",
+    "OR": "or",
+    "CANCEL": "Cancel",
+    "ERROR": "Invalid username or password"
+  },
+  "USERLIST": {
+    "TITLE": "User Management",
+    "ADD_USER": "Add New User",
+    "SEARCH_LABEL": "Search Users",
+    "SEARCH_PLACEHOLDER": "Name, Username, Email, or Phone",
+    "LOADING": "Loading users...",
+    "NO_USERS": "No users found",
+    "COL_ID": "ID",
+    "COL_NAME": "Name",
+    "COL_USERNAME": "Username",
+    "COL_EMAIL": "Email",
+    "COL_PHONE": "Phone",
+    "COL_WEBSITE": "Website",
+    "COL_ACTIONS": "Actions",
+    "TOOLTIP_EDIT": "Edit",
+    "TOOLTIP_DELETE": "Delete",
+    "CONFIRM_DELETE": "Are you sure you want to delete this user?",
+    "DELETE": "Delete"
+  },
+  "ADDUSER": {
+    "TITLE": "Add New User",
+    "ADDING": "Adding user...",
+    "SUBMIT": "Add User",
+    "CANCEL": "Cancel"
+  },
+  "EDITUSER": {
+    "TITLE": "Edit User",
+    "UPDATING": "Updating user...",
+    "SUBMIT": "Update User",
+    "CANCEL": "Cancel"
+  },
+  "FORM": {
+    "BASIC_INFO": "Basic Information",
+    "ADDRESS": "Address",
+    "COMPANY": "Company",
+    "USER_ID": "User ID",
+    "NAME": "Name",
+    "NAME_PLACEHOLDER": "Enter full name",
+    "NAME_ERROR": "Name is required (minimum 2 characters)",
+    "USERNAME": "Username",
+    "USERNAME_PLACEHOLDER": "Enter username",
+    "USERNAME_ERROR": "Username is required (minimum 3 characters)",
+    "EMAIL": "Email",
+    "EMAIL_PLACEHOLDER": "Enter email",
+    "EMAIL_ERROR": "Valid email is required",
+    "PHONE": "Phone",
+    "PHONE_PLACEHOLDER": "Enter phone number",
+    "PHONE_ERROR": "Phone is required",
+    "WEBSITE": "Website",
+    "WEBSITE_PLACEHOLDER": "Enter website URL",
+    "WEBSITE_ERROR": "Website is required",
+    "STREET": "Street",
+    "STREET_PLACEHOLDER": "Enter street address",
+    "STREET_ERROR": "Street is required",
+    "SUITE": "Suite",
+    "SUITE_PLACEHOLDER": "Enter suite/apartment",
+    "CITY": "City",
+    "CITY_PLACEHOLDER": "Enter city",
+    "CITY_ERROR": "City is required",
+    "ZIPCODE": "Zip Code",
+    "ZIPCODE_PLACEHOLDER": "Enter zip code",
+    "ZIPCODE_ERROR": "Zip code is required",
+    "COMPANY_NAME": "Company Name",
+    "COMPANY_NAME_PLACEHOLDER": "Enter company name",
+    "CATCH_PHRASE": "Catch Phrase",
+    "CATCH_PHRASE_PLACEHOLDER": "Enter catch phrase",
+    "BUSINESS_FIELD": "Business Field",
+    "BUSINESS_FIELD_PLACEHOLDER": "Enter business field"
+  },
+  "AUTH": {
+    "LOGIN_SUCCESS": "Login successful",
+    "GOOGLE_LOGIN_SUCCESS": "Google login successful",
+    "LOGOUT_SUCCESS": "Logged out successfully",
+    "SESSION_RESTORED": "Session restored",
+    "INVALID_CREDENTIALS": "Invalid username or email"
+  },
+  "LANG": {
+    "EN": "English",
+    "FR": "French",
+    "SV": "Swedish"
+  }
+}

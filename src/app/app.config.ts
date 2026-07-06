@@ -1,6 +1,6 @@
 import { ApplicationConfig, provideBrowserGlobalErrorListeners, isDevMode, InjectionToken, APP_INITIALIZER, inject } from '@angular/core';
 import { provideRouter } from '@angular/router';
-import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { HttpClient, provideHttpClient, withInterceptors } from '@angular/common/http';
 import { routes } from './app.routes';
 import { provideStore, Store } from '@ngrx/store';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
@@ -12,6 +12,15 @@ import { AuthEffects } from './auth/state/auth.effects';
 import { refreshFail, refreshStart } from './auth/state/auth.action';
 import { provideOAuthClient, OAuthService, AuthConfig } from 'angular-oauth2-oidc';
 import { initAuth } from './auth/init-auth';
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { importProvidersFrom } from '@angular/core';
+import { langInterceptor } from './core/lang.interceptor';
+import { LanguageService } from './core/language.service';
+
+export function HttpLoaderFactory(http: HttpClient) {
+  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+}
 
 export const API_BASE_URL = new InjectionToken<string>('API_BASE_URL');
 
@@ -52,12 +61,19 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes),
-    provideHttpClient(withInterceptors([authInterceptorInterceptor, errorInterceptor])),
+    provideHttpClient(withInterceptors([authInterceptorInterceptor, errorInterceptor, langInterceptor])),
+    importProvidersFrom(
+      TranslateModule.forRoot({
+        loader: { provide: TranslateLoader, useFactory: HttpLoaderFactory, deps: [HttpClient] },
+        defaultLanguage: 'en'
+      })
+    ),
     provideStore(AppReducer),
     provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }),
     provideEffects(AuthEffects),
     { provide: API_BASE_URL, useValue: '/api' },
     { provide: APP_INITIALIZER, useFactory: initAuth, multi: true },
+    { provide: APP_INITIALIZER, useFactory: (ls: LanguageService) => () => ls.init(), deps: [LanguageService], multi: true },
     provideOAuthClient({
       resourceServer: {
         allowedUrls: ['/api'],

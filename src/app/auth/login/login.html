@@ -1,21 +1,21 @@
 <div class="login-container">
     <mat-card>
-        <mat-card-title style="text-align: center; padding: 0 2%">Login</mat-card-title>
+        <mat-card-title style="text-align: center; padding: 0 2%">{{ 'LOGIN.TITLE' | translate }}</mat-card-title>
         <mat-card-content>
         <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
             <mat-form-field appearance="outline" style="width: 100%; margin-bottom: 16px;">
-            <mat-label>Username</mat-label>
-            <input matInput formControlName="username" placeholder="Enter your username" />
+            <mat-label>{{ 'LOGIN.USERNAME' | translate }}</mat-label>
+            <input matInput formControlName="username" placeholder="{{ 'LOGIN.USERNAME_PLACEHOLDER' | translate }}" />
             </mat-form-field>
 
             <mat-form-field appearance="outline" style="width: 100%; margin-bottom: 16px;">
-            <mat-label>Email</mat-label>
-            <input matInput formControlName="email" placeholder="Enter your email" />
+            <mat-label>{{ 'LOGIN.EMAIL' | translate }}</mat-label>
+            <input matInput formControlName="email" placeholder="{{ 'LOGIN.EMAIL_PLACEHOLDER' | translate }}" />
             </mat-form-field>
 
             <div style="display: flex; align-items: center; gap: 12px;">
                 <button mat-raised-button color="primary" type="submit"
-                    [disabled]="loginForm.invalid || (isLoading$ | async)">Login</button>
+                    [disabled]="loginForm.invalid || (isLoading$ | async)">{{ 'LOGIN.SIGNIN' | translate }}</button>
                 @if (isLoading$ | async) {
                     <mat-spinner diameter="24"></mat-spinner>
                 }
@@ -23,11 +23,11 @@
         </form>
 
         <div style="margin-top: 16px; text-align: center;">
-            <span>or</span>
+            <span>{{ 'LOGIN.OR' | translate }}</span>
         </div>
         <div style="margin-top: 12px; display: flex; justify-content: center;">
             <button mat-stroked-button type="button" (click)="loginWithGoogle()">
-                Sign in with Google
+                {{ 'LOGIN.LOGIN_WITH_GOOGLE' | translate }}
             </button>
         </div>
         </mat-card-content>
