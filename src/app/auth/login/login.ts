@@ -29,7 +29,7 @@ import { TranslateModule } from '@ngx-translate/core';
 })
 export class Login implements OnInit {
   private store = inject(Store<AuthState>);
-  private fb = inject(FormBuilder);
+  private  fb = inject(FormBuilder);
   private oauthService = inject(OAuthService);
 
   isLoading$ = this.store.select(getAuthLoading);
